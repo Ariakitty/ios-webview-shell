@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>My App</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "Helvetica Neue", sans-serif;
+    background: #f5f5f7;
+    color: #1d1d1f;
+    padding: env(safe-area-inset-top) 16px env(safe-area-inset-bottom);
+    min-height: 100vh;
+  }
+  .header { text-align: center; padding: 32px 0 20px; }
+  .header h1 { font-size: 26px; font-weight: 600; }
+  .badge { display: inline-block; margin-top: 10px; padding: 3px 12px; border-radius: 12px; font-size: 12px; background: #e5e5ea; color: #6e6e73; }
+  .badge.native { background: #007aff; color: #fff; }
+  .box { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 12px; font-size: 15px; line-height: 1.6; }
+  .box .hint { margin-top: 4px; font-size: 12px; color: #6e6e73; }
+  .btn { display: block; width: 100%; padding: 12px; border: 0; border-radius: 12px; background: #007aff; color: #fff; font-size: 16px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>My App</h1>
+  <span class="badge" id="modeBadge">web mode</span>
+</div>
+
+<div class="box" id="bridgeStatus">Checking native bridge...</div>
+<button class="btn" onclick="handleTap()">Tap Me</button>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var badge = document.getElementById('modeBadge');
+    var bridge = document.getElementById('bridgeStatus');
+    if (window.__NATIVE_APP__) {
+      badge.textContent = 'native mode';
+      badge.className = 'badge native';
+      bridge.innerHTML = 'Running inside native iOS shell<div class="hint">JS Bridge connected</div>';
+    } else {
+      bridge.innerHTML = 'Running in browser<div class="hint">Open in iOS app to activate native features</div>';
+    }
+  });
+
+  function handleTap() {
+    var btn = document.querySelector('.btn');
+    btn.textContent = window.__NATIVE_APP__ ? 'Hello from native shell!' : 'Hello from browser!';
+    setTimeout(function() { btn.textContent = 'Tap Me'; }, 1500);
+  }
+</script>
+</body>
+</html>
